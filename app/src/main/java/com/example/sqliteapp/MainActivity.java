@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mbtnInsert=findViewById(R.id.btnInsert);
+        mbtnupdate=findViewById(R.id.btnupdate);
+        mbtnDelete=findViewById(R.id.btnDelete);
+
+
 
         medtName=findViewById(R.id.edtName);
         medtContact=findViewById(R.id.edtContact);
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         mbtnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     buffer.append("Name:"+res.getString(0)+"\n");
                     buffer.append("Contact:"+res.getString(1)+"\n");
-                    buffer.append("Date of Birth:"+res.getString(2)+"\n");
+                    buffer.append("Date of Birth:"+res.getString(2)+"\n\n");
 
                     AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
                     builder.setCancelable(true);
@@ -79,6 +84,44 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+
+        mbtnupdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nametxt=medtName.getText().toString();
+                String dobtxt=medtDob.getText().toString();
+                String contacttxt=medtContact.getText().toString();
+
+                Boolean updateresult=db.updateData(nametxt,contacttxt,dobtxt);
+                if(updateresult==true)
+                {
+                    Toast.makeText(MainActivity.this,"UPDATED Successfully",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this," NOT UPDATED ",Toast.LENGTH_LONG).show();
+                }
+
+
+
+            }
+        });
+        mbtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nametxt=medtName.getText().toString();
+                boolean deletedata=db.delteData(nametxt);
+                if(deletedata==true)
+                {
+                    Toast.makeText(MainActivity.this," Deleted successfully",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this," NOT deleted ",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

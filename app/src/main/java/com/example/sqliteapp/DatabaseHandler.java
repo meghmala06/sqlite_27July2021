@@ -50,10 +50,73 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public Cursor getdata() {
 
+            //getWritableDatabase()...Create and/or open a database that will be used for reading and writing.
         SQLiteDatabase db=this.getWritableDatabase();
+
+        // rawQuery(String sql,String[] selectionArgs)
+        //Runs the provided SQL and returns a Cursor over the result set.
         Cursor cursor=db.rawQuery("Select * from studentdetails ",null);
         return  cursor;
 
 
     }
+
+    public boolean updateData(String name ,String contact,String dob)
+    {
+        //SQLiteDatabase Exposes methods to manage a SQLite database.
+        //SQLiteDatabase has methods to create, delete, execute SQL commands,
+        // and perform other common database management tasks.
+        SQLiteDatabase db=this.getWritableDatabase();
+        //ContentValues class is used to store a set of values that the ContentResolver can process.
+        ContentValues content=new ContentValues();
+        content.put("contact",contact);
+        content.put("dob",dob);
+
+        Cursor cursor=db.rawQuery("Select * from studentdetails where name=?",new String[]{name});
+        if(cursor.getCount()>0) {
+            long result = db.update("studentdetails", content, "name=?", new String[]{name});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        else
+            {
+            return false;
+        }
+
+
+
+    }
+
+    public boolean delteData(String name )
+    {
+        //SQLiteDatabase Exposes methods to manage a SQLite database.
+        //SQLiteDatabase has methods to create, delete, execute SQL commands,
+        // and perform other common database management tasks.
+        SQLiteDatabase db=this.getWritableDatabase();
+        //ContentValues class is used to store a set of values that the ContentResolver can process.
+        ContentValues content=new ContentValues();
+
+
+        Cursor cursor=db.rawQuery("Select * from studentdetails where name=?",new String[]{name});
+        if(cursor.getCount()>0) {
+            long result = db.delete("studentdetails", "name=?", new String[]{name});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+
+
+    }
+
+
 }
